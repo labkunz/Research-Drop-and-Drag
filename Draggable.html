@@ -2,11 +2,18 @@
 <html>
     <head>
         <title>Draggable</title>
+        <link rel="stylesheet" href="./for Draggable/style.css">
+        <script src="./for Draggable/draggable.js"></script>
     </head>
     <body>
-        <div id="targetContainer">
-            <div style="background-color: blueviolet; width: 300px; height: 200px;" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')">
-                Draggable Div
+        <div id="container">
+            <div id="targetContainer">
+                <div id="targetDrag" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')">
+                    Draggable Div
+                </div>
+            </div>
+            <div id="placeContainer">
+                
             </div>
         </div>
     </body>

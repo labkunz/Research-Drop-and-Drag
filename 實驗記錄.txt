@@ -2,3 +2,18 @@
 
 	可拖曳屬性: darggable
 	開始拖曳事件: ondragstart
+
+根據demo整理:
+
+	# Drag Source => 被點擊要拖曳的物件
+		對應事件:
+			dragstart => 點擊Drag Source&拖曳時瞬間觸發
+			drag => 拖曳過程持續觸發
+			dragend => 鬆開Drag Source觸發
+
+	# Drop Target => 拖曳物件要放置的區域
+		對應事件:
+			dragenter => 拖曳Drag Source首次進入Drop Target範圍觸發
+			dragover => 在Drop Target裡面持續觸發
+			dragleave => 拖曳Drag Source離開可放置區域觸發
+			drop => 拖曳Drag Source放在Drop Target裡時觸發
