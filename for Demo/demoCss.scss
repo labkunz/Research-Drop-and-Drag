@@ -1,0 +1,38 @@
+[draggable="true"] {
+    /*
+     To prevent user selecting inside the drag source
+    */
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+  #drag_drop_basic,
+  #drag_drop_multiple {
+    display: flex;
+    justify-content: space-between;
+    .soruce_container,
+    .target_container {
+      height: 200px;
+      border: 2px solid #ccc;
+      flex: 0 0 calc(50% - 1rem);
+    }
+    #drag_source_basic,
+    #drag_source_multiple {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: skyblue;
+      font-size: 50px;
+      line-height: 1.0;
+    }
+  }
+  .dragging {
+    opacity: .25;
+  }
+  .hover {
+    background-color: rgba(red, 0.4);
+  }
