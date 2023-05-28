@@ -1,0 +1,4 @@
+對於Draggable的實驗記錄:
+
+	可拖曳屬性: darggable
+	開始拖曳事件: ondragstart
