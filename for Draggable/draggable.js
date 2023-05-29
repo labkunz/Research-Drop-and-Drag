@@ -75,4 +75,46 @@ document.addEventListener("DOMContentLoaded", function() {
         // containerPart3.removeEventListener("mousemove", resizeV2);
         containerPart3.removeEventListener("mousemove", resize);
     });
+
+    //Part 4
+
+    let dragTarget4 = document.querySelector("#targetDrag4");
+    let resizeField4 = document.querySelector("#targetDrag4 .resizeField");
+
+    let dropX;
+    const setDropX = () => {
+
+    }
+
+    let m_pos_4;
+    const resize4 = (e) => {
+        const dx = e.x - m_pos4;
+        m_pos4 = e.x;
+        dragTarget4.style.width = `${(parseInt(getComputedStyle(dragTarget4, null).width) + dx)}px`;
+    }
+
+    let containerPart4 = document.querySelector(".container.part4");
+    let dropTagets4 = document.querySelectorAll("#container4 div");
+
+    const addTarget = (target) => {
+        target.classList.add("active");
+    }
+    const removeTarget = (target) => {
+        target.classList.remove("active");
+    }
+
+    dropTagets4.forEach(item => {
+        item.addEventListener("mouseover", addTarget(item));
+        item.addEventListener("mouseout", removeTarget(item));
+    });
+
+    resizeField4.addEventListener("mousedown", (e) => {
+        m_pos_4 = e.x;
+        containerPart4.addEventListener("mousemove", );
+    });
+
+    containerPart4.addEventListener("mouseup", (e) => {
+        containerPart4.removeEventListener("mousemove", );
+    });
+
 })
