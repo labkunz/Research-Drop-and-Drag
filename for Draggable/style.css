@@ -12,6 +12,9 @@
 #container1 {
     margin-bottom: 40px;
 }
+#container2 {
+    margin-bottom: 100px;
+}
 
 #targetContainer,
 #placeContainer {
@@ -37,4 +40,20 @@
 #targetDrag2 {
     position: absolute;
     z-index: 100;
+}
+#targetDrag3, #targetDrag4 {
+    position: absolute;
+    z-index: 100;
+    height: 100px;
+}
+#targetDrag3 .resizeField,
+#targetDrag4 .resizeField {
+    width: 10px;
+    height: inherit;
+    position: absolute;
+    z-index: 200;
+    top: 0;
+    right: 0;
+    background-color: #BE77FF;
+    cursor: e-resize;
 }

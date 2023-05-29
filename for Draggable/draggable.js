@@ -41,4 +41,38 @@ document.addEventListener("DOMContentLoaded", function() {
         item.addEventListener("dragover", cancelDefault);
         item.addEventListener("dragleave", cancelDefault);
     });
+
+    //Part 3
+    let dragTarget3 = document.querySelector("#targetDrag3");
+    let resizeField = document.querySelector("#targetDrag3 .resizeField");
+
+    let m_pos;
+    const resize = (e) => {
+        const dx = e.x - m_pos;
+        m_pos = e.x;
+        dragTarget3.style.width = `${(parseInt(getComputedStyle(dragTarget3, null).width) + dx)}px`;
+    }
+    const resizeV2 = (target, x) => {
+        const dx = x - m_pos;
+        m_pos = x;
+        target.style.width = `${(parseInt(getComputedStyle(target, null).width) + dx)}px`;
+    }
+
+    let dropTagets3 = document.querySelectorAll("#container3 div");
+    let containerPart3 = document.querySelector(".container.part3");
+
+    resizeField.addEventListener("mousedown", (e) => {
+        m_pos = e.x;
+        // containerPart3.addEventListener("mousemove", resizeV2(dragTarget3, e.x));
+        containerPart3.addEventListener("mousemove", resize);
+    });
+    // resizeField.addEventListener("mousedown", function (e) {
+    //     m_pos = e.x;
+    //     containerPart3.addEventListener("mousemove", resizeV2(dragTarget3, e));
+    // });
+
+    containerPart3.addEventListener("mouseup", (e) => {
+        // containerPart3.removeEventListener("mousemove", resizeV2);
+        containerPart3.removeEventListener("mousemove", resize);
+    });
 })
