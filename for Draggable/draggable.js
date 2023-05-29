@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-
-    let dragTarget = document.querySelector("#targetDrag");
+    //Part 1
+    let dragTarget = document.querySelector("#targetDrag1");
     dragTarget.addEventListener("dragstart", dragstart);
 
-    let dropTagets = document.querySelectorAll("#container div");
+    let dropTagets = document.querySelectorAll("#container1 div");
     dropTagets.forEach(item => {
         item.addEventListener("drop", drop);
 
@@ -28,5 +28,17 @@ document.addEventListener("DOMContentLoaded", function() {
         item.addEventListener("dragleave", cancelDefault);
     });
 
-    
+    //Part 2
+    let dragTarget2 = document.querySelector("#targetDrag2");
+    dragTarget2.draggable = true;
+    dragTarget2.addEventListener("dragstart", dragstart);
+    //or : dragTarget2.setAttribute('draggable', true);
+    let dropTagets2 = document.querySelectorAll("#container2 div");
+    dropTagets2.forEach(item => {
+        item.addEventListener("drop", drop);
+
+        item.addEventListener("dragenter", cancelDefault);
+        item.addEventListener("dragover", cancelDefault);
+        item.addEventListener("dragleave", cancelDefault);
+    });
 })

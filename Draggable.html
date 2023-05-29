@@ -6,13 +6,37 @@
         <script src="./for Draggable/draggable.js"></script>
     </head>
     <body>
-        <div id="container">
+        <h1>單純拖曳功能</h1>
+        <br >
+        <div class="container part1" id="container1">
             <div id="targetContainer">
-                <div id="targetDrag" draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')">
+                <div class="targetDrag" id="targetDrag1" draggable="true">
                     Draggable Div
                 </div>
             </div>
             <div id="placeContainer">
+                
+            </div>
+        </div>
+
+        <h1>模仿網格加上拖曳功能</h1>
+        <br >
+        <div class="container part2" id="container2">
+            <div class="dropTarget">
+                <div class="targetDrag" id="targetDrag2">
+                    Draggable Div
+                </div>
+            </div>
+            <div class="dropTarget">
+                
+            </div>
+            <div class="dropTarget">
+
+            </div>
+            <div class="dropTarget">
+                
+            </div>
+            <div class="dropTarget">
                 
             </div>
         </div>
