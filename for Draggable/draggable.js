@@ -52,10 +52,11 @@ document.addEventListener("DOMContentLoaded", function() {
         m_pos = e.x;
         dragTarget3.style.width = `${(parseInt(getComputedStyle(dragTarget3, null).width) + dx)}px`;
     }
-    const resizeV2 = (target, x) => {
-        const dx = x - m_pos;
-        m_pos = x;
-        target.style.width = `${(parseInt(getComputedStyle(target, null).width) + dx)}px`;
+    const resizeV2 = (e) => {
+        console.log(`e.currentTarget : ${e.currentTarget.classList}`);
+        const dx = e.x - m_pos;
+        m_pos = e.x;
+        e.currentTarget.style.width = `${(parseInt(getComputedStyle(e.currentTarget, null).width) + dx)}px`;
     }
 
     let dropTagets3 = document.querySelectorAll("#container3 div");
@@ -63,58 +64,74 @@ document.addEventListener("DOMContentLoaded", function() {
 
     resizeField.addEventListener("mousedown", (e) => {
         m_pos = e.x;
-        // containerPart3.addEventListener("mousemove", resizeV2(dragTarget3, e.x));
-        containerPart3.addEventListener("mousemove", resize);
+        containerPart3.addEventListener("mousemove", resizeV2);
+        // containerPart3.addEventListener("mousemove", resize);
     });
-    // resizeField.addEventListener("mousedown", function (e) {
-    //     m_pos = e.x;
-    //     containerPart3.addEventListener("mousemove", resizeV2(dragTarget3, e));
-    // });
 
     containerPart3.addEventListener("mouseup", (e) => {
-        // containerPart3.removeEventListener("mousemove", resizeV2);
-        containerPart3.removeEventListener("mousemove", resize);
+        containerPart3.removeEventListener("mousemove", resizeV2);
+        // containerPart3.removeEventListener("mousemove", resize);
     });
 
     //Part 4
 
-    let dragTarget4 = document.querySelector("#targetDrag4");
-    let resizeField4 = document.querySelector("#targetDrag4 .resizeField");
+    // let dragTarget4 = document.querySelector("#targetDrag4");
+    // let resizeField4 = document.querySelector("#targetDrag4 .resizeField");
 
-    let dropX;
-    const setDropX = () => {
+    // let dropX;
+    // const setDropX = () => {
+
+    // }
+
+    // let m_pos_4;
+    // const resize4 = (e) => {
+    //     const dx = e.x - m_pos4;
+    //     m_pos4 = e.x;
+    //     dragTarget4.style.width = `${(parseInt(getComputedStyle(dragTarget4, null).width) + dx)}px`;
+    // }
+
+    // let containerPart4 = document.querySelector(".container.part4");
+    // let dropTagets4 = document.querySelectorAll("#container4 div");
+
+    // const addTarget = (target) => {
+    //     target.classList.add("active");
+    // }
+    // const removeTarget = (target) => {
+    //     target.classList.remove("active");
+    // }
+
+    // dropTagets4.forEach(item => {
+    //     item.addEventListener("mouseover", addTarget(item));
+    //     item.addEventListener("mouseout", removeTarget(item));
+    // });
+
+    // resizeField4.addEventListener("mousedown", (e) => {
+    //     m_pos_4 = e.x;
+    //     containerPart4.addEventListener("mousemove", );
+    // });
+
+    // containerPart4.addEventListener("mouseup", (e) => {
+    //     containerPart4.removeEventListener("mousemove", );
+    // });
+
+    //Part 4-1
+    let dragTarget4_1 = document.querySelector("#targetDrag4-1");
+    dragTarget4_1.draggable = true;
+    dragTarget4_1.addEventListener("dragstart", dragstart);
+
+    const resizeFor4_1 = (e) => {
 
     }
 
-    let m_pos_4;
-    const resize4 = (e) => {
-        const dx = e.x - m_pos4;
-        m_pos4 = e.x;
-        dragTarget4.style.width = `${(parseInt(getComputedStyle(dragTarget4, null).width) + dx)}px`;
-    }
+    let resizeField4_1 = document.querySelector("#targetDrag4-1 .resizeField");
 
-    let containerPart4 = document.querySelector(".container.part4");
-    let dropTagets4 = document.querySelectorAll("#container4 div");
+    let containerPart4_1 = document.querySelector(".container.part4-1");
+    let dropTagets4_1 = document.querySelectorAll("#container4-1 div");
+    dropTagets4_1.forEach(item => {
+        item.addEventListener("drop", drop);
 
-    const addTarget = (target) => {
-        target.classList.add("active");
-    }
-    const removeTarget = (target) => {
-        target.classList.remove("active");
-    }
-
-    dropTagets4.forEach(item => {
-        item.addEventListener("mouseover", addTarget(item));
-        item.addEventListener("mouseout", removeTarget(item));
+        item.addEventListener("dragenter", cancelDefault);
+        item.addEventListener("dragover", cancelDefault);
+        item.addEventListener("dragleave", cancelDefault);
     });
-
-    resizeField4.addEventListener("mousedown", (e) => {
-        m_pos_4 = e.x;
-        containerPart4.addEventListener("mousemove", );
-    });
-
-    containerPart4.addEventListener("mouseup", (e) => {
-        containerPart4.removeEventListener("mousemove", );
-    });
-
 })
