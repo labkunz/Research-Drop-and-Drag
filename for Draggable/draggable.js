@@ -110,22 +110,44 @@ document.addEventListener("DOMContentLoaded", function() {
         // target.classList.remove("active");
     }
 
-    dropTagets4.forEach(item => {
-        // item.addEventListener("mouseover", addTarget(item));
-        // item.addEventListener("mouseout", removeTarget(item));
-        item.addEventListener("mouseover", () => {
-            console.log("check into item-mouseover");
-        });
-    });
+    // dropTagets4.forEach(item => {
+    //     item.addEventListener("mouseover", () => {
+    //         console.log("check into item-mouseover");
+    //     });
+    // });
 
-    resizeField4.addEventListener("mousedown", (e) => {
-        m_pos_4 = e.x;
-        containerPart4.addEventListener("mousemove", );
+    //使用事件捕獲概念進行測試
+    containerPart4.addEventListener("mousedown", (e) => {
+        if (e.target.dataset.name === "resizeField") {
+            console.log(`e.target.tagName : ${e.target.dataset.name} --- mousedown event`);
+        }
     });
-
+    containerPart4.addEventListener("mouseenter", (e) => {
+        if (e.target.dataset.name === "dropTarget") {
+            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseenter event`);
+        }
+    });
+    containerPart4.addEventListener("mouseover", (e) => {
+        if (e.target.dataset.name === "dropTarget") {
+            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseover event`);
+        }
+    })
     containerPart4.addEventListener("mouseup", (e) => {
-        containerPart4.removeEventListener("mousemove", );
+        if (e.target.dataset.name === "resizeField") {
+            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseup event`);
+        }
     });
+
+    
+
+    // resizeField4.addEventListener("mousedown", (e) => {
+    //     m_pos_4 = e.x;
+    //     containerPart4.addEventListener("mousemove", );
+    // });
+
+    // containerPart4.addEventListener("mouseup", (e) => {
+    //     containerPart4.removeEventListener("mousemove", );
+    // });
 
     //ChatGPT Part
     const dragElement = document.getElementById('dragElement');
