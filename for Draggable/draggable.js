@@ -103,51 +103,149 @@ document.addEventListener("DOMContentLoaded", function() {
     let containerPart4 = document.querySelector(".container.part4");
     let dropTagets4 = document.querySelectorAll("#container4 div");
 
-    const addTarget = (target) => {
-        // target.classList.add("active");
-    }
-    const removeTarget = (target) => {
-        // target.classList.remove("active");
+
+    //加上dataset property來方便計算
+    //預想: 
+    //      data-index: 序列,根據DOC結構給從1開始的漸增數字
+    //      data-point: 定位點,表示此dropTarget裡有某專案的定位點
+    const settingDataTag = () => {
+
+        let grids = document.querySelectorAll(".container.part4 > .dropTarget");
+        //let unit = grids[0].getBoundingClientRect().width;
+        
+        let index = 1;
+        grids.forEach(item => {
+            //定位點判斷:
+            let children = item.children;
+            if (children.lenth > 0) {
+                item.dataset.point = 1;
+            } else {
+                item.dataset.point = 0;
+            }
+
+            //序列設定
+            item.dataset.index = index;
+            index++;
+        });
+
+        resizeField4.dataset.pos = 1;
+        resizeField4.dataset.basic = parseInt(dragTarget4.getBoundingClientRect().width);
     }
 
+    //應該要把Move和Resize分開來寫,這樣不用引入switch的方式
+    const dragMove = () => {
+
+    }
+
+    const dragResize = (target) => {
+        //需要算出與目前targetDrag相隔多少個droptarget
+        //target: 觸發mouseover的元素,預想是droptarget
+        //point: 為targetDrag所在的droptarget
+    }
+
+    //測試：在此執行settingDataTag()
+    settingDataTag();
+
+    //結果：樣式 => hover就好 / 事件 => mouseover
     // dropTagets4.forEach(item => {
-    //     item.addEventListener("mouseover", () => {
-    //         console.log("check into item-mouseover");
+    //     item.addEventListener("mouseenter", (e) => {
+    //         // console.log("test mouseenter");
+    //         e.target.classList.add("dropTarget_hover");
+    //     });
+    //     item.addEventListener("mouseleave", (e) => {
+    //         // console.log("test mouseleave");
+    //         e.target.classList.remove("dropTarget_hover");
+    //     });
+    //     item.addEventListener("mouseover", (e) => {
+    //         // console.log("arrive another element...");
+    //         if (e.target.dataset.name === "dropTarget") {
+    //             console.log(`dropTaget index: ${e.target.dataset.index}`);
+    //             console.log(`dropTaget index: ${e.target.dataset.point}`);
+    //         }
     //     });
     // });
-
-    //使用事件捕獲概念進行測試
+    //上面改：用事件捕獲套用試試
+    //結果：沒辦法分開偵測
+    // containerPart4.addEventListener("mouseover", (e) => {
+    //     if (e.target.dataset.name === "dropTarget") {
+    //         console.log(`dropTarget index: ${e.target.dataset.index}`);
+    //         console.log(`dropTarget index: ${e.target.dataset.point}`);
+    //     }
+    //     if (e.target.dataset.name === "targetDrag") {
+    //         console.log(`targetDrag id: ${e.target.dataset.id}`);
+    //         console.log(`targetDrag point pos: ${e.target.dataset.pos}`);
+    //     }
+    // });
+    //修改：要把addEventListener裡在用.on___系列的事件另外開出來
+    //結果：只能增不能減
     containerPart4.addEventListener("mousedown", (e) => {
         if (e.target.dataset.name === "resizeField") {
-            console.log(`e.target.tagName : ${e.target.dataset.name} --- mousedown event`);
-        }
-    });
-    containerPart4.addEventListener("mouseenter", (e) => {
-        if (e.target.dataset.name === "dropTarget") {
-            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseenter event`);
-        }
-    });
-    containerPart4.addEventListener("mouseover", (e) => {
-        if (e.target.dataset.name === "dropTarget") {
-            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseover event`);
-        }
-    })
-    containerPart4.addEventListener("mouseup", (e) => {
-        if (e.target.dataset.name === "resizeField") {
-            console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseup event`);
+            // console.log(`e.target.dataset.pos = ${e.target.dataset.pos}`);
+            let targetPoint = e.target.dataset.pos;
+            let basicWidth = Number(e.target.dataset.basic);
+            let targetMain = e.target.parentElement;
+
+            containerPart4.onmouseover = (f) => {
+                if (f.target.dataset.name === "dropTarget") {
+                    // console.log(`dropTarget index: ${e.target.dataset.index}`);
+                    // console.log(`dropTarget point: ${e.target.dataset.point}`);
+
+                    let currentZone = f.target.dataset.index;
+                    let distanceIndex = currentZone - targetPoint;
+                    if (distanceIndex > 0) {
+                        let widthUnit = parseInt(f.target.getBoundingClientRect().width);
+                        let addWidth = distanceIndex * widthUnit;
+                        
+                        // console.log(`basicWidth : ${basicWidth}`);
+                        // console.log(`basicWidth typeof : ${typeof(basicWidth)}`);
+                        // console.log(`addWidth : ${addWidth}`);
+                        // console.log(`addWidth typeof : ${typeof(addWidth)}`);
+                        targetMain.style.width = `${(basicWidth + addWidth)}px`;
+                    }
+                }
+            }
         }
     });
 
-    
+    //修改：多個addEventListener跟外部參數試試
 
-    // resizeField4.addEventListener("mousedown", (e) => {
-    //     m_pos_4 = e.x;
-    //     containerPart4.addEventListener("mousemove", );
+    let targetPoint;
+    let basicWidth;
+    let targetMain;
+
+
+
+    // ======> OK!
+
+    //下一步：把這個值帶入進去改變寬度
+
+    //使用事件捕獲概念進行測試
+    // containerPart4.addEventListener("mousedown", (e) => {
+    //     console.log("trigger mousedonw");
+    //     if (e.target.dataset.name === "resizeField") {
+    //         // console.log(`e.target.tagName : ${e.target.dataset.name} --- mousedown event`);
+    //     }
     // });
-
+    // containerPart4.addEventListener("mouseenter", (e) => {
+    //     console.log("trigger mouseenter");
+    //     if (e.target.dataset.name === "dropTarget") {
+    //         // console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseenter event`);
+    //     }
+    // });
+    // containerPart4.addEventListener("mouseover", (e) => {
+    //     console.log("trigger mouseover");
+    //     if (e.target.dataset.name === "dropTarget") {
+    //         // console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseover event`);
+    //     }
+    // })
     // containerPart4.addEventListener("mouseup", (e) => {
-    //     containerPart4.removeEventListener("mousemove", );
+    //     console.log("trigger mouseup");
+    //     if (e.target.dataset.name === "resizeField") {
+    //         // console.log(`e.target.tagName : ${e.target.dataset.name} --- mouseup event`);
+    //     }
     // });
+
+
 
     //ChatGPT Part
     const dragElement = document.getElementById('dragElement');

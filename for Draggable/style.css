@@ -31,6 +31,9 @@
     height: 100px;
     position: relative;
 }
+.dropTarget_hover {
+    background-color: #ddbf9c;
+}
 
 .targetDrag {
     background-color: blueviolet; 
@@ -49,6 +52,14 @@
 #targetDrag4, #targetDrag4-1 {
     width: 200px;
 }
+#targetDrag4 {
+    width: 400px;
+    height: 100px;
+}
+.targetDrag_preview {
+    width: 400px;
+}
+
 #targetDrag3 .resizeField,
 #targetDrag4 .resizeField,
 #targetDrag4-1 .resizeField {
