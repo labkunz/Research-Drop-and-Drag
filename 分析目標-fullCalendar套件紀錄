@@ -1,0 +1,16 @@
+*. 從fullCalendar的實做來觀察他變動的方式：
+
+	＃ fc-daygrid-event-harness fc-daygrid-event-harness-abs => 紀錄目前event位置與寬度
+		=> 位置：以目前載入的位置為主會設定為top: 0px; left: 0px;
+		=> 寬度：現在頁面上橫跨的天數去轉為目前寬度紀錄
+		
+	＃ 移動時：插入一樣的element(fc-daygrid-event-harness fc-daygrid-event-harness-abs)，與原element同層
+		1. 原element會設定為visibility: hidden;
+		2. 插入element會變動他目前的位置與寬度(依照目前的操作)
+		3. 放開滑鼠後，插入element會消失，上面所紀錄的位置會設定給原element
+		
+	＃ 拖動區域：與我原想法一樣作法
+	
+	＃ visibility：element中layout部份保留，但可隱藏自己並無法獲得焦點
+	
+	＃ 猜：他把每個單位都用外距推出去來搞事？

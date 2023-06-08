@@ -1,0 +1,86 @@
+研究套件：Svelte-grid
+	Example：basic (https://svelte-grid.vercel.app/examples/basic)
+	
+	標的：應該是src/MoveResize/index.svelte和確定是src/utils/helper.js
+	
+紀錄：
+
+	helper -> gridHelp: 建立可移動物件
+	index.svelte => for Grid
+	index.svelte -> resizePointerDown -> resizePointerMove / resizePointerUp: 更改大小方式
+	resizePointerMove => 這裡是重點！
+		=> 小結：用算的
+	inActivate => 猜重新設定
+	
+	＃開鑽！
+		
+		核心：
+			* 怎麼抓Grid的長寬？
+			* 怎麼知道往哪裡長？
+			
+		鑽法：直接看他的算法, 畢竟算法就是一種"路線"和"文件"
+		
+		筆記：in resizePointerDown
+		
+			用pageX / pageY => mouse座標
+			resizeInitPos存放目前的pageX / pageY
+			initSize預設(outside resizePointerDown) => width:0 height:0
+			rect紀錄目前元素長寬資料(getBoundingClientRect())
+			？ newSize給一樣的width height, 但我不確定是不是一樣為0 ？
+			*目前不重要屬性設定*
+			到resizePointerMove
+			
+		      in resizePointerMove
+		      
+		      	用pageX / pageY => mouse座標(與resizePointerDown已不同)
+		      	第一次計算newSize: 初始size + 目前座標 - resizePointerDown儲存座標
+		      	？xPerPx / min.w / cols？
+		      		=> 
+		      			xPerPx: 0 (src)
+		      			yPerPx: rowHeight=100 (src->basic)
+		      			cols: 
+		      			shadow.x: 
+		      			max.w: 
+		      			max.h: 
+		      			min.w: 
+		      			min.h: 
+		      			gapX: 10 (src)
+		      			gapY: 10 (src)
+		      			
+		      	第二次計算newSize-width: 取最大(取最小(第一次newSize-width, ), )
+		      	
+	最外層為div->demo-container => 在basic.svx裡的最外層建立
+	  div->svlt-grid-container => 在src/index.svelte裡建立
+	    div->svlt-grid-item => 在src/MoveResize/index.svelte裡建立
+	      div->demo-widget => 在basic.svx的<Grid>內建立
+	      div->svlt-grid-resizer => 在src/MoveResize/index.svelte裡建立
+	
+	basic.svx裡把設定的cols丟進去
+	
+	猜：在MoveResize直接export let宣告的變數(ex: xPerPx, cols)會直接丟在主index做使用in <MoveResize>的屬性裡面(ex: {xPerPx}, cols={getComputedCols})
+		=> 若以xPerPx為例, 在MoveResize的作用都是拿來做計算, 可能是在外層丟值進去
+		=> 以此猜測, 在MoveResize的init xPerPx = 0 / yPerPx = 100 (好像發現了什麼新大陸...)
+	
+	items裡的... 6: ...是指可切6欄的意思
+	
+
+看過有點模糊...
+
+	e.pageX / e.pageY => 網頁整個文件(document)的座標屬性
+	
+沒看過？
+
+	Event pointermove / pointerup? => 為了補足目前可以觸控的行為而加上的事件
+		pointermove --對應-- mousemove
+		pointerup   --對應-- mouseup
+	
+	e.target.closest? => 對e.target選取到所指定的父層Element
+	
+	onMount? => 猜：把data掛載上去渲染成DOM
+	
+	sort()? => Javascript可作的排序func
+	
+思考之後...
+
+	如果我把dropTarget的寬度抓到, 然後算出拉伸的寬度, 可以去比較說
+	
