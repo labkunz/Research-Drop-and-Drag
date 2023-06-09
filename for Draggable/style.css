@@ -15,6 +15,12 @@
 #container2 {
     margin-bottom: 100px;
 }
+#container3 {
+    margin-bottom: 100px;
+}
+#container4 {
+    margin-bottom: 100px;
+}
 
 #targetContainer,
 #placeContainer {
@@ -33,6 +39,10 @@
 }
 .dropTarget_hover {
     background-color: #ddbf9c;
+}
+
+.container.part5 .dropTarget {
+
 }
 
 .targetDrag {
@@ -59,6 +69,15 @@
 .targetDrag_preview {
     width: 400px;
 }
+
+.container.part5 .targetDrag {
+    height: 50px;
+}
+.container.part5 .targetDrag.targetDragCount {
+    height: 50px;
+    position: absolute;
+}
+.container.part5
 
 #targetDrag3 .resizeField,
 #targetDrag4 .resizeField,
