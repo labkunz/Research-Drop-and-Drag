@@ -14,3 +14,69 @@
 	＃ visibility：element中layout部份保留，但可隱藏自己並無法獲得焦點
 	
 	＃ 猜：他把每個單位都用外距推出去來搞事？
+	
+---------
+回去挖source code：
+
+	packages/core/src/options.ts 		-> 宣告型態
+	packages/core/src/CalendarContext.ts 	-> 包裝成大型態
+	packages/core/src/internal.ts		-> 全包出去
+	
+	
+	packages/interaction/src/interactions/EventDragging.ts =>
+		1. -> .fc-event-draggable, .fc-event-resizable
+		
+	packages/interaction/src/interactions/EventResizing.ts =>
+		1. -> .fc-event-resizer
+		2. 事件：
+			-> pointerdown	猜：按下resize區的時候
+			-> dragstart	猜：拖曳大小開始
+			-> hitupdate	猜：變化大小時更動resize區時？
+			-> dragend	猜：拖曳大小結束
+		3. 關鍵字：
+			-> minDistance (eventDragMinDistance)	猜：設定拖曳的最小距離		解：好像有看到一點東西！？
+			-> settings InteractionSettings		猜：已經在這裡把基本數值設定好	解：有點複雜，目前沒看到像的東西
+			-> ev: PointerDragEvent			猜：關於方法中的計算		解：結果只是型態宣告
+		
+	From EventResizing Find：
+	=>
+	packages/interaction/src/dnd/FeaturefulElementDragging.tx =>
+		1. 同層ts：AutoScroller / ElementMirror / PointerDragging (可能都要checked一下)
+		2. func：
+			*. destroy() 
+				=> 猜：資源回收
+			*. onPointerDown(PointerDragEvent) => 
+				preventSelection：預先防止target被mouse和touch選到
+			*. onPointerMove(PointerDragEvent)
+			*. onPointerUp(PointerDragEvent)
+			*. startDelay(PointerDragEvent)
+			*. handleDelayEnd(PointerDragEvent)
+			*. handleDistanceSurpassed(PointerDragEvent)
+			*. tryStartDrag(PointerDragEvent)
+			*. tryStopDrag(PointerDragEvent)
+			*. stopDrag(PointerDragEvent)
+			*. setIgnoreMove(boolean)
+			*. setMirrorIsVisible(boolean)
+			*. setMirrorNeedsRevert(boolean)
+			*. setAutoScrollEnabled(boolean)
+		
+		2. 補：
+			*. PointerDragEvent => 型態
+	
+	farther : 
+		*. 找到 .fc-event-draggable .fc-event-resizable的class了（EventDragging: line44）
+		*. 感覺EventDragging所繼承的Interaction很可疑
+		*. 不想要drag和resize同時開，可以使用eventStartEditable or eventDurationEditable
+		*. eventDurationEditable是for resize
+		
+	question :
+		#. fc中的callbacks -> eventResize會是我要找的目標嗎？
+	
+---------
+全補：
+
+	onselectstart => 防止選中文本？	
+	source:
+		https://cloud.tencent.com/developer/article/1180728
+
+	
