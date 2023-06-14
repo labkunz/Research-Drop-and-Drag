@@ -45,22 +45,76 @@
 		2. func：
 			*. destroy() 
 				=> 猜：資源回收
+				
 			*. onPointerDown(PointerDragEvent) => 
-				preventSelection：預先防止target被mouse和touch選到
-			*. onPointerMove(PointerDragEvent)
-			*. onPointerUp(PointerDragEvent)
-			*. startDelay(PointerDragEvent)
-			*. handleDelayEnd(PointerDragEvent)
+				preventSelection(document.body)：					消除selection event
+				preventContextMenu(document.body)：					消除contextMenu event
+				this.emitter.trigger('pointerdown', ev)：				emitter觸發pointerdown事件
+				this.mirror.setIsVisible(false)：					mirror element設定成display: none
+				this.mirror.start(ev.subjectEl as HTMLElement, ev.pageX, ev.pageY)：	mirror element初始化設定
+					=> origScreenCoord：pageCoord - window.pageCoordOffset
+					=> deltaCoord：0
+				this.startDelay(ev)：							觸發下方func
+				
+			*. onPointerMove(PointerDragEvent) =>
+				this.emitter.trigger('pointermove', ev)：				emitter觸發pointermove事件
+				distanceSq = deltaX * deltaX + deltaY * deltaY：			算出移動的方形面積？
+				if (distanceSq >= minDistance * minDistance)：				確認最小移動方形與移動方形
+				this.handleDistanceSurpassed(ev)：					如果有符合判斷式，觸發下方func
+				this.mirror.handleMove(ev.pageX, ev.pageY)：				mirror element設定移動事件
+				this.autoScroller.handleMove(ev.pageX, ev.pageY)：			AutoScroller設定移動事件
+				this.emitter.trigger('dragmove', ev)：					emitter觸發dragmove事件
+				
+			*. onPointerUp(PointerDragEvent) =>
+				allowSelection(document.body)：						恢復selection event
+				allowContextMenu(document.body)：					恢復contextMenu event
+				this.emitter.trigger('pointerup', ev)：					emitter觸發pointerup事件
+				this.autoScroller.stop()：						AutoScroller設定停止事件
+				this.tryStopDrag(ev)：							觸發下方func
+				
+			*. startDelay(PointerDragEvent) => 
+				if (typeof this.delay === 'number')：					確認delay的type為number
+				--- setTimeout	
+				--- setting value							
+				this.handleDelayEnd(ev)：						觸發下面func
+				
+			*. handleDelayEnd(PointerDragEvent) =>
+				--- setting value
+				this.tryStartDrag(ev)：							觸發下面func
+				
 			*. handleDistanceSurpassed(PointerDragEvent)
-			*. tryStartDrag(PointerDragEvent)
-			*. tryStopDrag(PointerDragEvent)
-			*. stopDrag(PointerDragEvent)
+			
+			*. tryStartDrag(PointerDragEvent) =>
+				--- setting value
+				this.autoScroller.start(ev.pageX, ev.pageY, this.containerEl)：		AutoScroller設定移動相關value
+				this.emitter.trigger('dragstart', ev)：					emitter觸發dragstart事件
+				
+			*. tryStopDrag(PointerDragEvent) =>
+				this.mirror.stop(this.mirrorNeedsRevert, this.stopDrag.bind(this, ev))：mirror element設定停止事件
+			
+			*. stopDrag(PointerDragEvent) =>
+				--- setting value
+				this.emitter.trigger('dragend', ev)					emitter觸發dragend事件
+			
 			*. setIgnoreMove(boolean)
 			*. setMirrorIsVisible(boolean)
 			*. setMirrorNeedsRevert(boolean)
 			*. setAutoScrollEnabled(boolean)
 		
-		2. 補：
+		3. flow：
+			*. onPointerDown(PointerDragEvent)
+				-> startDelay(PointerDragEvent)
+				  -> handleDelayEnd(PointerDragEvent)
+				    -> tryStartDrag(PointerDragEvent)
+				    
+			*. onPointerMove(PointerDragEvent)
+				-> handleDistanceSurpassed(PointerDragEvent)
+				  -> tryStartDrag(PointerDragEvent)
+		
+			*. onPointerUp(PointerDragEvent)
+				-> tryStopDrag(PointerDragEvent)
+				  -> stopDrag(PointerDragEvent)
+		4. 補：
 			*. PointerDragEvent => 型態
 	
 	farther : 
@@ -76,7 +130,14 @@
 全補：
 
 	onselectstart => 防止選中文本？	
+		=> 防止target被mouse和touch選到
 	source:
 		https://cloud.tencent.com/developer/article/1180728
+	
+	oncontextmenu => 開啟右鍵選單or長按選單
+	source: 
+		https://developer.mozilla.org/zh-CN/docs/Web/API/Element/contextmenu_event
 
+	pageX document: https://segmentfault.com/a/1190000002405897
+	pageXoffset document: https://www.tiocloud.com/2/blog/1396807074142363648
 	
