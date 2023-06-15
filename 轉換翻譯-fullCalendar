@@ -1,0 +1,11 @@
+思考一下到現在看到fullCalendar的作法：
+
+	1. For drag：
+	
+		原本 => 把整個長度（多個單位長度）的target全部搬移
+		翻譯 => 只搬target的定位點（一個單位長度），剩下全靠畫
+		
+	2. For adjust size：
+	
+		原本 => 直接調整target的大小
+		翻譯 => 

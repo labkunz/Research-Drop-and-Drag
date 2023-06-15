@@ -15,6 +15,20 @@
 	
 	＃ 猜：他把每個單位都用外距推出去來搞事？
 	
+結構：
+
+	fc-daygrid-day-frame fc-scrollgrid-sync-inner	=> 214 * 115
+		|
+		|-- fc-daygrid-day-top			=> 214 *  38
+		|-- fc-daygrid-day-events		=> 214 *  40
+		|	|
+		|	|-- fc-daygrid-day-bottom	=> 214 *   0
+		|
+		|-- fc-daygrid-day-bg			=> 214 *   0
+	
+	
+	fc-daygrid-day-frame
+	fc-daygrid-day-events
 ---------
 回去挖source code：
 
@@ -116,6 +130,9 @@
 				  -> stopDrag(PointerDragEvent)
 		4. 補：
 			*. PointerDragEvent => 型態
+			
+	back to the God's perspective：
+	
 	
 	farther : 
 		*. 找到 .fc-event-draggable .fc-event-resizable的class了（EventDragging: line44）

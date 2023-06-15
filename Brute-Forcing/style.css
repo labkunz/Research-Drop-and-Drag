@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    gap: 1%;
+}
+
+.fake_grid {
+    height: 95vh;
+    /* padding-right: 1%; */
+    flex: 1;
+    position: relative;
+}
+
+.card {
+    position: absolute;
+    height: 155px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 6px 1px #D6D6D6;
+}
+.card_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.card_content {
+    font-size: 14px;
+}
+.card_operation {
+    text-align: center;
+}
+
+.custom_btn {
+    outline: 0;
+    border: 0;
+    background-color: rgb(53, 99, 7);
+    color: #FFFFFF;
+    border-radius: 4px;
+}
+
+.resize_field {
+    position: absolute;
+    right: 0;
+    height: 155px;
+    width: 10px;
+}
+.resize_field:hover {
+    cursor: e-resize;
+}

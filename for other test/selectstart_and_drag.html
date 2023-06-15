@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drag and selectstart Event Example</title>
+  <style>
+    .draggable {
+      width: 100px;
+      height: 100px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <div id="myElement" class="draggable" draggable="true">
+    Drag me!
+  </div>
+
+  <script>
+    var draggableElement = document.getElementById('myElement');
+
+    draggableElement.addEventListener('dragstart', function(event) {
+      // 開始拖曳時阻止文字選取
+      draggableElement.addEventListener('selectstart', disableTextSelection);
+
+      // 將拖曳的數據設定為元素的 ID
+      event.dataTransfer.setData('text/plain', draggableElement.id);
+    });
+
+    draggableElement.addEventListener('dragend', function() {
+      // 拖曳結束時移除 selectstart 事件的監聽器
+      draggableElement.removeEventListener('selectstart', disableTextSelection);
+    });
+
+    function disableTextSelection(event) {
+      event.preventDefault();
+    }
+  </script>
+</body>
+</html>
