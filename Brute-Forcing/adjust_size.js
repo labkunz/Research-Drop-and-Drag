@@ -51,4 +51,26 @@ document.addEventListener("DOMContentLoaded", function() {
         })
     })
 
+    //建立resize區域並且增加相關事件
+    const adjustWidth = (e) => {
+        let checkArray = [...rangeArray];
+        let varietyWidth = 0;
+
+        checkArray.forEach(item => {
+            if (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) {
+                
+            } else {
+                let currentDistance = item.getEnd() - item.getStart();
+                varietyWidth += currentDistance;
+            }
+        })
+    }
+
+    let resizeField = document.querySelector(".resize_field");
+    resizeField.addEventListener("pointerdown", function(e) {
+        //Can setting other element
+
+        resizeField.addEventListener("pointermove", adjustWidth);
+    });
+
 });
