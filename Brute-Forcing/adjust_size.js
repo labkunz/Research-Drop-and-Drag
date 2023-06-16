@@ -87,6 +87,17 @@ document.addEventListener("DOMContentLoaded", function() {
         startIndex = getCurrentItem.getIndex();
     }
 
+    //參考FullCalendar
+    //需要一個mirror element去展示出寬度的變化
+    //等待滑鼠放開後再去對原element做設定
+
+    //插入Mirror元素
+    const InsertMirrorElement = () => {}
+    const DeleteMirrorElement = () => {}
+
+    //調整Mirror元素寬度
+    const adjustMirrorWidth = () => {}
+
     //建立resize區域並且增加相關事件
     const adjustWidth = (e) => {
 
