@@ -37,6 +37,11 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(`item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
     });
 
+    //宣告間隔變數
+    let firstItem = rangeArray[0];
+    let secondItem = rangeArray[1];
+    const gapDistance = secondItem.getStart() - firstItem.getEnd(); 
+
     //測試：確認滑鼠可以抓到所在空間
     // let panel = document.querySelector(".container");
     // panel.addEventListener("pointermove", function(e) {
@@ -66,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let checkArray = [...rangeArray];
         let getCurrentItem = checkArray.find(item => {
-            return item.getStart() <= cardX && cardX <= item.getEnd();
+            return (item.getStart() <= cardX && cardX <= item.getEnd());
         });
 
         startIndex = getCurrentItem.getIndex();
@@ -83,11 +88,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //確認目前在哪段區域
         let getCurrentItem = checkArray.find(item => {
-            return item.getStart() <= current_page_x && current_page_x <= item.getEnd();
+            return (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) || 
+                   (item.getEnd() <= current_page_x && current_page_x <= (item.getEnd() + gapDistance));
         });
 
         let currentIndex = getCurrentItem.getIndex();
         console.log(`currentIndex : ${currentIndex}`);
+
         //把該段區域以前的長度加總起來
         let getCurrentArray = checkArray.slice(startIndex, currentIndex);
         let partPoint = 0;
@@ -98,18 +105,27 @@ document.addEventListener("DOMContentLoaded", function() {
             partPoint = item.getEnd();
         });
 
-        let card = e.currentTarget.previousElementSibling;
+        console.log(`varietyWidth : ${varietyWidth}`);
+        console.log(`adjustWidth e.target : ${e.target.classList}`);
+        console.log(`adjustWidth e.currentTarget : ${e.currentTarget.classList}`);
+
+        //let card = e.currentTarget.previousElementSibling;
+        let card = e.currentTarget.parentElement;
+
+        console.log(`getComputedStyle(card, null).width : ${getComputedStyle(card, null).width}`);
 
         card.style.width = `${getComputedStyle(card, null).width + varietyWidth}px`;
     }
 
     let panel = document.querySelector(".container");
-    
+
     let resizeField = document.querySelector(".resize_field");
     resizeField.addEventListener("pointerdown", function(e) {
         
         recordEntry(e);
         console.log(`startIndex : ${startIndex}`);
+        console.log(`e.target : ${e.target.classList}`);
+        console.log(`e.currentTarget : ${e.currentTarget.classList}`);
         console.log("input the pointerdown event");
 
         //resizeField.addEventListener("pointermove", adjustWidth);
