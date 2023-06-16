@@ -12,7 +12,7 @@ function RangeItem(start, end, index) {
     }
 
     this.getIndex = function () {
-        return this.index;
+        return Number(this.index);
     }
 }
 
@@ -51,6 +51,27 @@ document.addEventListener("DOMContentLoaded", function() {
     //     });
     // });
 
+    let startIndex = 0;
+
+    let testArray = [...rangeArray];
+    testArray.forEach(item => {
+        console.log(`testArray item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
+    });
+
+    //需要加上初始進入點的紀錄
+    const recordEntry = (e) => {
+        let card = e.currentTarget.previousElementSibling;
+        let rect = card.getBoundingClientRect();
+        let cardX = rect["x"];
+
+        let checkArray = [...rangeArray];
+        let getCurrentItem = checkArray.find(item => {
+            return item.getStart() <= cardX && cardX <= item.getEnd();
+        });
+
+        startIndex = getCurrentItem.getIndex();
+    }
+
     //建立resize區域並且增加相關事件
     const adjustWidth = (e) => {
 
@@ -60,24 +81,15 @@ document.addEventListener("DOMContentLoaded", function() {
         let checkArray = [...rangeArray];
         let varietyWidth = 0;
 
-        // checkArray.forEach(item => {
-        //     if (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) {
-                
-        //     } else {
-        //         let currentDistance = item.getEnd() - item.getStart();
-        //         varietyWidth += currentDistance;
-        //     }
-        // });
-
         //確認目前在哪段區域
-        let getCurrentIndex = checkArray.find(item => {
-            if (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) {
-                return item.getIndex();
-            }
+        let getCurrentItem = checkArray.find(item => {
+            return item.getStart() <= current_page_x && current_page_x <= item.getEnd();
         });
 
+        let currentIndex = getCurrentItem.getIndex();
+        console.log(`currentIndex : ${currentIndex}`);
         //把該段區域以前的長度加總起來
-        let getCurrentArray = checkArray.slice(getCurrentIndex);
+        let getCurrentArray = checkArray.slice(startIndex, currentIndex);
         let partPoint = 0;
         getCurrentArray.forEach(item => {
             let partWidth = item.getEnd() - item.getStart();
@@ -86,19 +98,22 @@ document.addEventListener("DOMContentLoaded", function() {
             partPoint = item.getEnd();
         });
 
-        //let card = document.querySelector(".resize_field")
         let card = e.currentTarget.previousElementSibling;
 
         card.style.width = `${getComputedStyle(card, null).width + varietyWidth}px`;
     }
 
+    let panel = document.querySelector(".container");
+    
     let resizeField = document.querySelector(".resize_field");
     resizeField.addEventListener("pointerdown", function(e) {
-        //Can setting other element
-
+        
+        recordEntry(e);
+        console.log(`startIndex : ${startIndex}`);
         console.log("input the pointerdown event");
 
-        resizeField.addEventListener("pointermove", adjustWidth);
+        //resizeField.addEventListener("pointermove", adjustWidth);
+        panel.addEventListener("pointermove", adjustWidth);
     });
 
     //當觸發pointup事件時,解除adjustWidth
@@ -106,7 +121,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         console.log("input the pointerup event");
 
-        resizeField.removeEventListener("pointermove", adjustWidth);
+        //resizeField.removeEventListener("pointermove", adjustWidth);
+        panel.removeEventListener("pointermove", adjustWidth);
     });
 
 });
