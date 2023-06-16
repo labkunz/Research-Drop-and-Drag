@@ -63,6 +63,16 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(`testArray item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
     });
 
+    //對需要調整的目標加上active
+    const markTarget = (e) => {
+        let target = e.target.parentElement;  //follow the html structure
+        target.classList.add("darg-resize-active");
+    }
+    const dismarkTarget = () => {
+        let target = document.querySelector(".darg-resize-active");
+        target.classList.remove("darg-resize-active");
+    }
+
     //需要加上初始進入點的紀錄
     const recordEntry = (e) => {
         let card = e.currentTarget.previousElementSibling;
@@ -106,16 +116,22 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         console.log(`varietyWidth : ${varietyWidth}`);
-        console.log(`adjustWidth e.target : ${e.target.classList}`);
-        console.log(`adjustWidth e.currentTarget : ${e.currentTarget.classList}`);
+        // console.log(`adjustWidth e.target : ${e.target.classList}`);
+        // console.log(`adjustWidth e.currentTarget : ${e.currentTarget.classList}`);
 
         //let card = e.currentTarget.previousElementSibling;
-        let card = e.currentTarget.parentElement;
+        //let card = e.currentTarget.parentElement;
+        let card = document.querySelector(".darg-resize-active");
 
         console.log(`getComputedStyle(card, null).width : ${getComputedStyle(card, null).width}`);
+        console.log(`total : ${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`);
 
-        card.style.width = `${getComputedStyle(card, null).width + varietyWidth}px`;
+        card.style.width = `${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`;
     }
+
+    //問題：要如何對到要調整寬度的目標？
+    //思路一：用老招加上active class------------先用這招
+    //思路二：放入工作佇列or陣列之類的當作紀錄
 
     let panel = document.querySelector(".container");
 
@@ -123,9 +139,10 @@ document.addEventListener("DOMContentLoaded", function() {
     resizeField.addEventListener("pointerdown", function(e) {
         
         recordEntry(e);
+        markTarget(e);
         console.log(`startIndex : ${startIndex}`);
-        console.log(`e.target : ${e.target.classList}`);
-        console.log(`e.currentTarget : ${e.currentTarget.classList}`);
+        // console.log(`e.target : ${e.target.classList}`);
+        // console.log(`e.currentTarget : ${e.currentTarget.classList}`);
         console.log("input the pointerdown event");
 
         //resizeField.addEventListener("pointermove", adjustWidth);
@@ -139,6 +156,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         //resizeField.removeEventListener("pointermove", adjustWidth);
         panel.removeEventListener("pointermove", adjustWidth);
+
+        dismarkTarget();
     });
 
 });
