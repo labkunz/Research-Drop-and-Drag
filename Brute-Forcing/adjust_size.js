@@ -140,36 +140,39 @@ document.addEventListener("DOMContentLoaded", function() {
         let getCurrentItem = checkArray.find(item => {
             return (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) || 
                    (item.getEnd() <= current_page_x && current_page_x <= (item.getEnd() + gapDistance));
+            // return ((item.getStart() + gapDistance) <= current_page_x && current_page_x <= item.getStart()) ||
+            //        (item.getStart() <= current_page_x && current_page_x <= item.getEnd());
         });
 
         let currentIndex = getCurrentItem.getIndex();
-        console.log(`currentIndex : ${currentIndex}`);
+        //console.log(`currentIndex : ${currentIndex}`);
 
         //把該段區域以前的長度加總起來
-        let getCurrentArray = checkArray.slice(startIndex, currentIndex);
+        let getCurrentArray = checkArray.slice(startIndex - 1, currentIndex);
+        console.log(`startIndex : ${startIndex} | currentIndex : ${currentIndex}`);
         console.log(`getCurrentArray length: ${getCurrentArray.length}`);
         let partPoint = 0;
-        console.log("---------------------------------");
+        //console.log("---------------------------------");
         getCurrentArray.forEach(item => {
-            console.log(` => item.getEnd() : ${item.getEnd()}`);
-            console.log(` => item.getStart() : ${item.getStart()}`);
-            console.log(` => partPoint : ${partPoint}`);
+            //console.log(` => item.getEnd() : ${item.getEnd()}`);
+            //console.log(` => item.getStart() : ${item.getStart()}`);
+            //console.log(` => partPoint : ${partPoint}`);
 
-            let partWidth = item.getEnd() - item.getStart();    //要做
+            let partWidth = item.getEnd() - item.getStart();
             let partGap = item.getStart() - partPoint;
 
             //判斷是否為第一格開始計算
             partGap = partGap == item.getStart() ? 0 : partGap;
 
-            console.log(` => partWidth : ${partWidth}`);
-            console.log(` => partGap : ${partGap} `);
+            //console.log(` => partWidth : ${partWidth}`);
+            //console.log(` => partGap : ${partGap} `);
 
-            console.log(" >>>>>>>>>>>>>> Time <<<<<<<<<<<<<< ");
+            //console.log(" >>>>>>>>>>>>>> Time <<<<<<<<<<<<<< ");
 
             varietyWidth += (partGap + partWidth);
-            partPoint = item.getEnd();  //要做
+            partPoint = item.getEnd();
         });
-        console.log("---------------------------------");
+        //console.log("---------------------------------");
 
         let cardClone = document.querySelector(".mirror-item");
         cardClone.style.width = `${varietyWidth}px`;
@@ -238,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function() {
         markTarget(e);
         insertMirrorElement(e);
 
-        console.log(`startIndex : ${startIndex}`);
+        //console.log(`startIndex : ${startIndex}`);
         // console.log(`e.target : ${e.target.classList}`);
         // console.log(`e.currentTarget : ${e.currentTarget.classList}`);
         console.log("input the pointerdown event");
