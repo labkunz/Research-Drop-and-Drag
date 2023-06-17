@@ -6,3 +6,5 @@ getComputedStyle(elem,null)
 getBoundingClientRect()：https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 
 append / appendChild：https://juejin.cn/post/7006894020429348901
+
+cloneNode()：https://www.w3schools.com/jsref/met_node_clonenode.asp

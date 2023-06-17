@@ -32,17 +32,17 @@ document.addEventListener("DOMContentLoaded", function() {
         rangeArray.push(obj);
     });
 
-    //測試：console rangeArray item
-    rangeArray.forEach(item => {
-        console.log(`item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
-    });
+    // //測試：console rangeArray item
+    // rangeArray.forEach(item => {
+    //     console.log(`item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
+    // });
 
     //宣告間隔變數
     let firstItem = rangeArray[0];
     let secondItem = rangeArray[1];
     const gapDistance = secondItem.getStart() - firstItem.getEnd(); 
 
-    //測試：確認滑鼠可以抓到所在空間
+    // 測試：確認滑鼠可以抓到所在空間
     // let panel = document.querySelector(".container");
     // panel.addEventListener("pointermove", function(e) {
 
@@ -63,6 +63,10 @@ document.addEventListener("DOMContentLoaded", function() {
     testArray.forEach(item => {
         console.log(`testArray item ${item.getIndex()} : start = ${item.getStart()} / end = ${item.getEnd()}`);
     });
+
+    const cancelDefault = (e) => {
+        e.preventDefault();
+    }
 
     //對需要調整的目標加上active
     const markTarget = (e) => {
@@ -195,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         let currentIndex = getCurrentItem.getIndex();
-        console.log(`currentIndex : ${currentIndex}`);
+        // console.log(`currentIndex : ${currentIndex}`);
 
         //把該段區域以前的長度加總起來
         let getCurrentArray = checkArray.slice(startIndex, currentIndex);
@@ -215,8 +219,8 @@ document.addEventListener("DOMContentLoaded", function() {
         //let card = e.currentTarget.parentElement;
         let card = document.querySelector(".darg-resize-active");
 
-        console.log(`getComputedStyle(card, null).width : ${getComputedStyle(card, null).width}`);
-        console.log(`total : ${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`);
+        // console.log(`getComputedStyle(card, null).width : ${getComputedStyle(card, null).width}`);
+        // console.log(`total : ${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`);
 
         card.style.width = `${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`;
     }
@@ -238,6 +242,10 @@ document.addEventListener("DOMContentLoaded", function() {
     let resizeField = document.querySelector(".resize_field");
     resizeField.addEventListener("pointerdown", function(e) {
         
+        //取消選取文字預設和右鍵開啟選單
+        panel.addEventListener("selectstart", cancelDefault);
+        panel.addEventListener("contextmenu", cancelDefault);
+
         recordEntry(e);
         markTarget(e);
         insertMirrorElement(e);
@@ -266,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function() {
     //     deleteMirrorElement();
     //     dismarkTarget();
     // });
-    
+
     //從resizeField觸發更改成panel--可接受的拖曳範圍
     panel.addEventListener("pointerup", function() {
         console.log("input the pointerup event");
@@ -277,6 +285,10 @@ document.addEventListener("DOMContentLoaded", function() {
         adjustWidthV2();
         deleteMirrorElement();
         dismarkTarget();
+
+        //回復選取文字預設和右鍵開啟選單
+        panel.removeEventListener("selectstart", cancelDefault);
+        panel.removeEventListener("contextmenu", cancelDefault);
     })
 
 });
