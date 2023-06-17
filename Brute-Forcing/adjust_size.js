@@ -151,10 +151,17 @@ document.addEventListener("DOMContentLoaded", function() {
         let currentIndex = getCurrentItem.getIndex();
         //console.log(`currentIndex : ${currentIndex}`);
 
+        //調整寬度時不能設定比原本還小
+        //實際作法：currentIndex不能小於startIndex
+        // if (currentIndex < startIndex) {
+        //     currentIndex = startIndex;
+        // }
+        currentIndex = currentIndex < startIndex ? startIndex : currentIndex;
+
         //把該段區域以前的長度加總起來
         //注意getIndex格式與陣列關係
         let getCurrentArray = checkArray.slice(startIndex - 1, currentIndex);
-        // console.log(`startIndex : ${startIndex} | currentIndex : ${currentIndex}`);
+        console.log(`startIndex : ${startIndex} | currentIndex : ${currentIndex}`);
         // console.log(`getCurrentArray length: ${getCurrentArray.length}`);
         let partPoint = 0;
         //console.log("---------------------------------");

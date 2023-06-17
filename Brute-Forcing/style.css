@@ -13,7 +13,7 @@
     /* padding-right: 1%; */
     flex: 1;
     position: relative;
-    border: 1px dashed #000000;
+    /* border: 1px dashed #000000; */
 }
 
 .card {
@@ -53,6 +53,9 @@
     right: 0;
     height: 155px;
     width: 10px;
+    z-index: 100;
+
+    background-color: #D6D6D6;
 }
 .resize_field:hover {
     cursor: e-resize;
