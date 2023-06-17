@@ -1,0 +1,8 @@
+event.target 與 event.currentTarget的差別
+
+DOM圖示：https://ithelp.ithome.com.tw/articles/10202689
+
+getComputedStyle(elem,null)
+getBoundingClientRect()：https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+
+append / appendChild：https://juejin.cn/post/7006894020429348901

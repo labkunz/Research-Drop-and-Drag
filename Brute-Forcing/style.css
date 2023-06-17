@@ -13,6 +13,7 @@
     /* padding-right: 1%; */
     flex: 1;
     position: relative;
+    border: 1px dashed #000000;
 }
 
 .card {

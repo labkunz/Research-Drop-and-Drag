@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // });
 
     let startIndex = 0;
+    let finalWidth = 0;
 
     let testArray = [...rangeArray];
     testArray.forEach(item => {
@@ -65,16 +66,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //對需要調整的目標加上active
     const markTarget = (e) => {
+        console.log("markTarget()");
+
         let target = e.target.parentElement;  //follow the html structure
         target.classList.add("darg-resize-active");
     }
     const dismarkTarget = () => {
+        console.log("dismarkTarget()");
+
         let target = document.querySelector(".darg-resize-active");
         target.classList.remove("darg-resize-active");
     }
 
     //需要加上初始進入點的紀錄
     const recordEntry = (e) => {
+        console.log("recordEntry()");
+
         let card = e.currentTarget.previousElementSibling;
         let rect = card.getBoundingClientRect();
         let cardX = rect["x"];
@@ -92,11 +99,64 @@ document.addEventListener("DOMContentLoaded", function() {
     //等待滑鼠放開後再去對原element做設定
 
     //插入Mirror元素
-    const InsertMirrorElement = () => {}
-    const DeleteMirrorElement = () => {}
+    const insertMirrorElement = (e) => {
+        console.log("insertMirrorElement()");
+
+        let insertElement = e.currentTarget.parentElement.parentElement;
+        let becopyTarget = e.currentTarget.parentElement;
+        let clone = becopyTarget.cloneNode(true);
+
+        //加入Mirror元素標示
+        clone.classList.add("mirror-item");
+        insertElement.append(clone);
+        //設定visibility：
+        becopyTarget.style.visibility = "hidden";
+    }
+    const setFinalWidth = () => {
+        console.log("setFinalWidth()");
+
+        let mirrorItem = document.querySelector(".mirror-item");
+        finalWidth = parseInt(getComputedStyle(card, null).width);
+    }
+    const deleteMirrorElement = () => {
+        console.log("deleteMirrorElement()");
+
+        let mirrorItem = document.querySelector(".mirror-item");
+        let target = document.querySelector(".darg-resize-active");
+
+        target.style.visibility = "visible";
+        mirrorItem.remove();
+    }
 
     //調整Mirror元素寬度
-    const adjustMirrorWidth = () => {}
+    const adjustMirrorWidth = (e) => {
+        console.log("adjustMirrorWidth()");
+
+        let current_page_x = e.pageX;
+        let checkArray = [...rangeArray];
+        let varietyWidth = 0;
+
+        //確認目前在哪段區域
+        let getCurrentItem = checkArray.find(item => {
+            return (item.getStart() <= current_page_x && current_page_x <= item.getEnd()) || 
+                   (item.getEnd() <= current_page_x && current_page_x <= (item.getEnd() + gapDistance));
+        });
+
+        let currentIndex = getCurrentItem.getIndex();
+
+        //把該段區域以前的長度加總起來
+        let getCurrentArray = checkArray.slice(startIndex, currentIndex);
+        let partPoint = 0;
+        getCurrentArray.forEach(item => {
+            let partWidth = item.getEnd() - item.getStart();
+            let partGap = item.getStart() - partPoint;
+            varietyWidth += (partGap + partWidth);
+            partPoint = item.getEnd();
+        });
+
+        let cardClone = document.querySelector(".mirror-item");
+        cardClone.style.width = `${varietyWidth}px`;
+    }
 
     //建立resize區域並且增加相關事件
     const adjustWidth = (e) => {
@@ -139,6 +199,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
         card.style.width = `${parseInt(getComputedStyle(card, null).width) + varietyWidth}px`;
     }
+    const adjustWidthV2 = () => {
+        console.log("adjustWidthV2");
+
+        let target = documentElement.querySelector(".darg-resize-active");
+
+        target.style.width = `${finalWidth}px`;
+        finalWidth = 0;
+    }
 
     //問題：要如何對到要調整寬度的目標？
     //思路一：用老招加上active class------------先用這招
@@ -151,13 +219,16 @@ document.addEventListener("DOMContentLoaded", function() {
         
         recordEntry(e);
         markTarget(e);
+        insertMirrorElement(e);
+
         console.log(`startIndex : ${startIndex}`);
         // console.log(`e.target : ${e.target.classList}`);
         // console.log(`e.currentTarget : ${e.currentTarget.classList}`);
         console.log("input the pointerdown event");
 
         //resizeField.addEventListener("pointermove", adjustWidth);
-        panel.addEventListener("pointermove", adjustWidth);
+        //panel.addEventListener("pointermove", adjustWidth);
+        panel.addEventListener("pointermove", adjustMirrorWidth);
     });
 
     //當觸發pointup事件時,解除adjustWidth
@@ -166,8 +237,12 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("input the pointerup event");
 
         //resizeField.removeEventListener("pointermove", adjustWidth);
-        panel.removeEventListener("pointermove", adjustWidth);
+        //panel.removeEventListener("pointermove", adjustWidth);
+        panel.removeEventListener("pointermove", adjustMirrorWidth);
 
+        setFinalWidth();
+        adjustWidthV2();
+        deleteMirrorElement();
         dismarkTarget();
     });
 
