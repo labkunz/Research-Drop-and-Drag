@@ -143,16 +143,33 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         let currentIndex = getCurrentItem.getIndex();
+        console.log(`currentIndex : ${currentIndex}`);
 
         //把該段區域以前的長度加總起來
         let getCurrentArray = checkArray.slice(startIndex, currentIndex);
+        console.log(`getCurrentArray length: ${getCurrentArray.length}`);
         let partPoint = 0;
+        console.log("---------------------------------");
         getCurrentArray.forEach(item => {
-            let partWidth = item.getEnd() - item.getStart();
+            console.log(` => item.getEnd() : ${item.getEnd()}`);
+            console.log(` => item.getStart() : ${item.getStart()}`);
+            console.log(` => partPoint : ${partPoint}`);
+
+            let partWidth = item.getEnd() - item.getStart();    //要做
             let partGap = item.getStart() - partPoint;
+
+            //判斷是否為第一格開始計算
+            partGap = partGap == item.getStart() ? 0 : partGap;
+
+            console.log(` => partWidth : ${partWidth}`);
+            console.log(` => partGap : ${partGap} `);
+
+            console.log(" >>>>>>>>>>>>>> Time <<<<<<<<<<<<<< ");
+
             varietyWidth += (partGap + partWidth);
-            partPoint = item.getEnd();
+            partPoint = item.getEnd();  //要做
         });
+        console.log("---------------------------------");
 
         let cardClone = document.querySelector(".mirror-item");
         cardClone.style.width = `${varietyWidth}px`;
