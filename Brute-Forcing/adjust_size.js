@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("setFinalWidth()");
 
         let mirrorItem = document.querySelector(".mirror-item");
-        finalWidth = parseInt(getComputedStyle(card, null).width);
+        finalWidth = parseInt(getComputedStyle(mirrorItem, null).width);
     }
     const deleteMirrorElement = () => {
         console.log("deleteMirrorElement()");
@@ -148,9 +148,10 @@ document.addEventListener("DOMContentLoaded", function() {
         //console.log(`currentIndex : ${currentIndex}`);
 
         //把該段區域以前的長度加總起來
+        //注意getIndex格式與陣列關係
         let getCurrentArray = checkArray.slice(startIndex - 1, currentIndex);
-        console.log(`startIndex : ${startIndex} | currentIndex : ${currentIndex}`);
-        console.log(`getCurrentArray length: ${getCurrentArray.length}`);
+        // console.log(`startIndex : ${startIndex} | currentIndex : ${currentIndex}`);
+        // console.log(`getCurrentArray length: ${getCurrentArray.length}`);
         let partPoint = 0;
         //console.log("---------------------------------");
         getCurrentArray.forEach(item => {
@@ -222,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const adjustWidthV2 = () => {
         console.log("adjustWidthV2");
 
-        let target = documentElement.querySelector(".darg-resize-active");
+        let target = document.querySelector(".darg-resize-active");
 
         target.style.width = `${finalWidth}px`;
         finalWidth = 0;
@@ -252,18 +253,30 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     //當觸發pointup事件時,解除adjustWidth
-    resizeField.addEventListener("pointerup", function(e) {
+    // resizeField.addEventListener("pointerup", function(e) {
 
+    //     console.log("input the pointerup event");
+
+    //     //resizeField.removeEventListener("pointermove", adjustWidth);
+    //     //panel.removeEventListener("pointermove", adjustWidth);
+    //     panel.removeEventListener("pointermove", adjustMirrorWidth);
+
+    //     setFinalWidth();
+    //     adjustWidthV2();
+    //     deleteMirrorElement();
+    //     dismarkTarget();
+    // });
+    
+    //從resizeField觸發更改成panel--可接受的拖曳範圍
+    panel.addEventListener("pointerup", function() {
         console.log("input the pointerup event");
 
-        //resizeField.removeEventListener("pointermove", adjustWidth);
-        //panel.removeEventListener("pointermove", adjustWidth);
         panel.removeEventListener("pointermove", adjustMirrorWidth);
 
         setFinalWidth();
         adjustWidthV2();
         deleteMirrorElement();
         dismarkTarget();
-    });
+    })
 
 });
